@@ -30,6 +30,16 @@ To use the provided Burp Suite extension for testing your website (e.g., `test.c
 1. **Initiate Passive Scan:**
    - Visit your website (`test.com`) in a web browser or use other tools to interact with it.
    - The extension will passively scan responses for the presence of the string "eval(".
+   - You can also pass other common keywords instead such as :
+    + exec(
+    + system(
+    + shell_exec(
+    + passthru(
+    + popen(
+    + proc_open(
+    + <script>
+    + onload=
+    + onmouseover=
 
 ### Run Active Scan:
 1. **Initiate Active Scan:**
