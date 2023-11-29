@@ -1,5 +1,5 @@
 # RCE_Vuln_Finder
-To use the provided Burp Suite extension for testing your website (e.g., `test.com`), you need to follow these steps:
+To use this provided Burp Suite extension for testing your website (e.g., `test.com`), you need to follow these steps:
 
 ### Prerequisites:
 1. **Install Burp Suite:**
