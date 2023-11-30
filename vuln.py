@@ -42,7 +42,7 @@ class BurpExtender(IBurpExtender, IScannerCheck):
             "High"
         )]
 
-    def doActiveScan(self, baseRequestResponse, insertionPoint):
+  def doActiveScan(self, baseRequestResponse, insertionPoint):
     # Example: Inject different payloads for active scanning
     payloads = [
         b"';alert('XSS');//",
