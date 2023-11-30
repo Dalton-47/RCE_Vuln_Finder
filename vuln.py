@@ -43,35 +43,35 @@ class BurpExtender(IBurpExtender, IScannerCheck):
         )]
 
     def doActiveScan(self, baseRequestResponse, insertionPoint):
-        # Example: Inject different payloads for active scanning
-  payloads = [
-            b"';alert('XSS');//",
-            b"$(document).ready(function(){alert('XSS')});",
-            b'"><s>xss',
-            b'"><A HRef=\" AutoFocus OnFocus=top/**/?.[\'ale\'%2B\'rt\'](1)>',
-            b'\u0022\u003c%26quot;%26gt;%26lt;"\';}};</SCRIPT><img src=x onerror=alert(69)>${{7*7}',
-            # Add your additional payloads here
-        ]
-      
-        for payload in payloads:
-            checkRequest = insertionPoint.buildRequest(payload)
-            checkRequestResponse = self._callbacks.makeHttpRequest(
-                baseRequestResponse.getHttpService(), checkRequest)
+    # Example: Inject different payloads for active scanning
+    payloads = [
+        b"';alert('XSS');//",
+        b"$(document).ready(function(){alert('XSS')});",
+        b'"><s>xss',
+        b'"><A HRef=\" AutoFocus OnFocus=top/**/?.[\'ale\'%2B\'rt\'](1)>',
+        b'\u0022\u003c%26quot;%26gt;%26lt;"\';}};</SCRIPT><img src=x onerror=alert(69)>${{7*7}}',
+        # Add your additional payloads here
+    ]
 
-            # Example: Check for specific error messages indicating a vulnerability
-            matches = self._get_matches(checkRequestResponse.getResponse(), b"error")
-            if matches:
-                requestHighlights = [insertionPoint.getPayloadOffsets(payload)]
-                return [CustomScanIssue(
-                    baseRequestResponse.getHttpService(),
-                    self._helpers.analyzeRequest(baseRequestResponse).getUrl(),
-                    [self._callbacks.applyMarkers(checkRequestResponse, requestHighlights, matches)],
-                    "Potential Injection Vulnerability",
-                    "The application may be vulnerable to injection attacks. Verify and remediate.",
-                    "High"
-                )]
+    for payload in payloads:
+        checkRequest = insertionPoint.buildRequest(payload)
+        checkRequestResponse = self._callbacks.makeHttpRequest(
+            baseRequestResponse.getHttpService(), checkRequest)
 
-        return None
+        # Example: Check for specific error messages indicating a vulnerability
+        matches = self._get_matches(checkRequestResponse.getResponse(), b"error")
+        if matches:
+            requestHighlights = [insertionPoint.getPayloadOffsets(payload)]
+            return [CustomScanIssue(
+                baseRequestResponse.getHttpService(),
+                self._helpers.analyzeRequest(baseRequestResponse).getUrl(),
+                [self._callbacks.applyMarkers(checkRequestResponse, requestHighlights, matches)],
+                "Potential Injection Vulnerability",
+                "The application may be vulnerable to injection attacks. Verify and remediate.",
+                "High"
+            )]
+
+    return None
 
     def consolidateDuplicateIssues(self, existingIssue, newIssue):
         if existingIssue.getIssueName() == newIssue.getIssueName():
